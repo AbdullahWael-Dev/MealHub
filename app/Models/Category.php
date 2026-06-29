@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUniqueSlug;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,7 +10,7 @@ use Illuminate\Support\Str;
 
 class Category extends Model
 {
-    use SoftDeletes, HasFactory;
+    use SoftDeletes, HasFactory, HasUniqueSlug;
     protected $fillable = [
         'name',
         'slug',
@@ -32,34 +33,5 @@ class Category extends Model
     public function scopeOrdered($query)
     {
         return $query->orderBy('sort_order', 'asc');
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::saving(function ($category) {
-            if ($category->isDirty('name') || empty($category->slug)) {
-                $category->slug = static::generateUniqueSlug($category->name, $category->id);
-            }
-        });
-    }
-
-    protected static function generateUniqueSlug(string $name, ?int $ignoreId = null): string
-    {
-        $slug = Str::slug($name);
-        $originalSlug = $slug;
-        $count = 1;
-
-        while (
-            static::where('slug', $slug)
-            ->when($ignoreId, fn($query) => $query->where('id', '!=', $ignoreId))
-            ->exists()
-        ) {
-            $slug = "{$originalSlug}-{$count}";
-            $count++;
-        }
-
-        return $slug;
     }
 }
