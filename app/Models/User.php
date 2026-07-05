@@ -63,4 +63,11 @@ class User extends Authenticatable
             }
         });
     }
+    public function addresses(){
+        return $this->hasMany(Address::class);
+    }
+    public function defaultAddress()
+    {
+        return $this->hasOne(Address::class)->where('is_default', true);
+    }
 }
