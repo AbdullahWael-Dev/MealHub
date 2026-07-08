@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -58,13 +59,19 @@ class User extends Authenticatable
     {
         parent::boot();
         static::forceDeleting(function (User $user) {
-           if ($user->avatar) {
+            if ($user->avatar) {
                 Storage::disk('public')->delete($user->avatar);
             }
         });
     }
-    public function addresses(){
+    public function addresses()
+    {
         return $this->hasMany(Address::class);
+    }
+
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
     }
     public function defaultAddress()
     {
