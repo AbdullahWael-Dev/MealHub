@@ -52,6 +52,10 @@ class Meal extends Model
         return $this->hasMany(MealImage::class)->where('is_primary', true);
     }
 
+    public function favorites(): HasMany
+    {
+        return $this->hasMany(Favorite::class);
+    }
     protected function displayImage(): Attribute
     {
         return Attribute::make(
@@ -92,6 +96,9 @@ class Meal extends Model
         parent::boot();
         static::forceDeleting(function (Meal $meal) {
             $meal->images->each(fn($image) => $image->delete());
+        });
+        static::deleting(function (Meal $meal) {
+            $meal->favorites()->delete();
         });
     }
 }
