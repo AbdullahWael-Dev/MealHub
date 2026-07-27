@@ -47,9 +47,9 @@ class Meal extends Model
         return $this->hasMany(MealImage::class);
     }
 
-    public function primaryImage(): HasMany
+    public function primaryImage()
     {
-        return $this->hasMany(MealImage::class)->where('is_primary', true);
+        return $this->hasOne(MealImage::class)->where('is_primary', true);
     }
 
     public function favorites(): HasMany
@@ -101,4 +101,10 @@ class Meal extends Model
             $meal->favorites()->delete();
         });
     }
+
+    public function cartItems(): HasMany
+    {
+        return $this->hasMany(CartItem::class);
+    } 
+
 }

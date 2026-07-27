@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\AddressController;
 use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\FavoriteController;
 use App\Http\Controllers\Api\V1\MealController;
@@ -31,6 +32,14 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::post('/', [FavoriteController::class, 'store'])->name('store');
             Route::delete('/{meal}', [FavoriteController::class, 'destroy'])->name('destroy');
             Route::get('/check/{meal}', [FavoriteController::class, 'check'])->name('check');
+        });
+
+        Route::prefix('cart')->name('cart.')->group(function () {
+            Route::get('/', [CartController::class, 'index']);
+            Route::post('/items', [CartController::class, 'addItem']);
+            Route::patch('/items/{meal}', [CartController::class, 'updateItem']);
+            Route::delete('/items/{meal}', [CartController::class, 'removeItem']);
+            Route::delete('/clear', [CartController::class, 'clear']);
         });
 
 
