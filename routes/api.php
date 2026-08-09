@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AddressController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CartController;
 use App\Http\Controllers\Api\V1\CategoryController;
+use App\Http\Controllers\Api\V1\CouponController;
 use App\Http\Controllers\Api\V1\FavoriteController;
 use App\Http\Controllers\Api\V1\MealController;
 use App\Http\Controllers\Api\V1\ProfileController;
@@ -41,7 +42,9 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::delete('/items/{meal}', [CartController::class, 'removeItem']);
             Route::delete('/clear', [CartController::class, 'clear']);
         });
-
+        Route::prefix('coupons')->name('coupons.')->group(function () {
+            Route::post('validate', [CouponController::class, 'validate']);
+        });
 
         Route::get('profile', [ProfileController::class, 'show'])->name('profile');
         Route::put('profile', [ProfileController::class, 'updateProfile'])->name('updateProfile');
