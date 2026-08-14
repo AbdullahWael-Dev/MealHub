@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\CategoryController;
 use App\Http\Controllers\Api\V1\CouponController;
 use App\Http\Controllers\Api\V1\FavoriteController;
 use App\Http\Controllers\Api\V1\MealController;
+use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,6 +45,13 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
         });
         Route::prefix('coupons')->name('coupons.')->group(function () {
             Route::post('validate', [CouponController::class, 'validate']);
+        });
+
+        Route::prefix('orders')->group(function () {
+            Route::post('/', [OrderController::class, 'store']);
+            Route::get('/', [OrderController::class, 'index']);
+            Route::get('/{order}', [OrderController::class, 'show']);
+            Route::patch('/{order}/cancel', [OrderController::class, 'cancel']);
         });
 
         Route::get('profile', [ProfileController::class, 'show'])->name('profile');
