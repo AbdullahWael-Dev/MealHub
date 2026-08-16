@@ -9,11 +9,15 @@ use App\Http\Controllers\Api\V1\FavoriteController;
 use App\Http\Controllers\Api\V1\MealController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\ReviewController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::post('login', [AuthController::class, 'login'])->name('login');
     Route::post('register', [AuthController::class, 'register'])->name('register');
+    Route::get('meals/{meal}/reviews', [ReviewController::class, 'index']);
+    Route::get('reviews/{review}', [ReviewController::class, 'show']);
+
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('categories')->name('categories.')->group(function () {
@@ -54,10 +58,15 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
             Route::patch('/{order}/cancel', [OrderController::class, 'cancel']);
         });
 
+        Route::post('meals/{meal}/reviews', [ReviewController::class, 'store']);
+        Route::prefix('reviews')->group(function () {
+            Route::put('{review}', [ReviewController::class, 'update']);
+            Route::delete('{review}', [ReviewController::class, 'destroy']);
+        });
+
         Route::get('profile', [ProfileController::class, 'show'])->name('profile');
         Route::put('profile', [ProfileController::class, 'updateProfile'])->name('updateProfile');
         Route::put('change-password', [ProfileController::class, 'changePassword'])->name('changePassword');
-
         Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     });
 });
