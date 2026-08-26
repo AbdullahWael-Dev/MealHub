@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\FavoriteController;
 use App\Http\Controllers\Api\V1\MealController;
 use App\Http\Controllers\Api\V1\OrderController;
 use App\Http\Controllers\Api\V1\ProfileController;
+use App\Http\Controllers\Api\V1\RecommendationController;
 use App\Http\Controllers\Api\V1\ReviewController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,7 +18,7 @@ Route::prefix('v1')->name('api.v1.')->group(function () {
     Route::post('register', [AuthController::class, 'register'])->name('register');
     Route::get('meals/{meal}/reviews', [ReviewController::class, 'index']);
     Route::get('reviews/{review}', [ReviewController::class, 'show']);
-
+    Route::post('/ai/recommendations', [RecommendationController::class, 'recommend']);
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::prefix('categories')->name('categories.')->group(function () {

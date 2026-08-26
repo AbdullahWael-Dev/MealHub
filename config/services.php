@@ -34,5 +34,13 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'ai' => [
+        'base_url' => env('AI_BASE_URL', 'https://openrouter.ai/api/v1'),
+        'api_key'  => env('OPENROUTER_API_KEY'),
+        'model'    => env('AI_MODEL', 'openai/gpt-4o-mini'),
+        'timeout'  => env('AI_TIMEOUT', 15),
+        'retries'  => env('AI_RETRIES', 2),
+        'retry_delay_ms' => env('AI_RETRY_DELAY_MS', 200),
+    ],
 
 ];

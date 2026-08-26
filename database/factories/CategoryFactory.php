@@ -19,6 +19,7 @@ class CategoryFactory extends Factory
     {
         return [
             'name' => fake()->unique()->words(2, true),
+            'slug' => fake()->unique()->slug(),
             'image_path' => null,
             'is_active' => fake()->boolean(80),
             'sort_order' => fake()->numberBetween(1, 100),
