@@ -12,6 +12,31 @@ class CategorySeeder extends Seeder
      */
     public function run(): void
     {
-        Category::factory()->count(20)->create();
+        $categories = [
+            'Burgers & Sandwiches',
+            'Pizza & Pasta',
+            'Grilled Chicken',
+            'Healthy Bowls',
+            'Seafood',
+            'Wraps & Rolls',
+            'Breakfast',
+            'Desserts',
+            'Drinks',
+            'Vegan & Vegetarian',
+            'Family Meals',
+            'Appetizers',
+        ];
+
+        foreach ($categories as $index => $name) {
+            Category::updateOrCreate(
+                ['name' => $name],
+                [
+                    'slug' => str($name)->slug()->toString(),
+                    'image_path' => null,
+                    'is_active' => true,
+                    'sort_order' => $index + 1,
+                ]
+            );
+        }
     }
 }

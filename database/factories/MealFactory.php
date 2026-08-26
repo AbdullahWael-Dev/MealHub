@@ -26,6 +26,7 @@ class MealFactory extends Factory
             'category_id' => Category::query()->inRandomOrder()->value('id')
                 ?? Category::factory(),
             'name' => fake()->unique()->words(3, true),
+            'slug' => fake()->unique()->slug(),
             'description' => fake()->paragraph(),
             'price' => $price,
             'discount_price' => $hasDiscount

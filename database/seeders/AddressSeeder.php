@@ -13,16 +13,25 @@ class AddressSeeder extends Seeder
      */
     public function run(): void
     {
-        $users = User::all();
+        $users = User::query()->get();
 
         if ($users->isEmpty()) {
-            $this->command->warn('مفيش يوزرز في الداتابيز. اعمل UserSeeder أو UserFactory الأول.');
-            return;
+            $this->call(UserSeeder::class);
+            $users = User::query()->get();
         }
-        $users->each(function ($user) {
-            $count = fake()->numberBetween(1, 5);
-            $addresses = Address::factory()->count($count)->create(['user_id' => $user->id]);
-            $addresses->random()->update(['is_default' => true]);
-        });
+
+        foreach ($users as $user) {
+            $existingAddresses = $user->addresses()->count();
+
+            if ($existingAddresses === 0) {
+                $count = fake()->numberBetween(1, 3);
+                $addresses = Address::factory()->count($count)->create(['user_id' => $user->id]);
+                $addresses->first()->update(['is_default' => true]);
+                continue;
+            }
+
+            $user->addresses()->update(['is_default' => false]);
+            $user->addresses()->inRandomOrder()->first()->update(['is_default' => true]);
+        }
     }
 }
